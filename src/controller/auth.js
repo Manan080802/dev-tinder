@@ -4,7 +4,7 @@ const Util = require("../utils/response");
 const User = require("../model/user");
 const userService = require("../services/user");
 const ApiError = require("../utils/ApiError");
-const { U01, U02, U07, U06, U03 } = require("../messages/user.json");
+const { U01, U02, U07, U06, U03, U08 } = require("../messages/user.json");
 const signup = catchAsync(async (req, res) => {
   const { email } = req.body;
   const userExist = await userService.getUserByEmail(email, true);
@@ -42,11 +42,7 @@ const login = catchAsync(async (req, res) => {
   }
 
   if (!(await user.isPasswordMatch(password))) {
-    throw new ApiError(
-      httpStatus.NOT_FOUND,
-      "user is not exist",
-      "user is not exit"
-    );
+    throw new ApiError(httpStatus.NOT_FOUND, U08, "U08");
   }
 
   if (user && user.password) {

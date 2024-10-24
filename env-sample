@@ -10,3 +10,6 @@ auth =Authentication failed.
 
 #bcrypt 
 ROUND =2
+
+#jwt
+SECRET_KEY= devTinder
