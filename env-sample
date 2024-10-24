@@ -1,0 +1,12 @@
+PORT =3500
+
+# database
+url = mongodb://admin:admin@localhost:27017/
+dbName = dev-tinder
+user= devTinder
+password = devTinder
+hostName=localhost:27017
+auth =Authentication failed.
+
+#bcrypt 
+ROUND =2
