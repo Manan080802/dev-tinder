@@ -53,7 +53,6 @@ const login = catchAsync(async (req, res) => {
     delete user._doc.password;
   }
   const token = await user.getToken();
-  console.log(token);
   res.cookie("token", token);
 
   res.status(httpStatus.OK).send(Util.success(user, U07, "U07"));
