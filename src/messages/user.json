@@ -1,0 +1,9 @@
+{
+    "U01": "User is created.",
+    "U02": "User is already exist.",
+    "U03": "User is inactive. Please contact DEV TINDER.",
+    "U04": "User is deleted.",
+    "U05": "User is found.",
+    "U06": "User is not found.",
+    "U07": "User is login."
+}
