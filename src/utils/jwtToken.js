@@ -1,6 +1,4 @@
 const jwt = require("jsonwebtoken");
-const ApiError = require("./ApiError");
-const httpStatus = require("http-status");
 const User = require("../model/user");
 
 const jwtTokenVerify = async (token) => {
