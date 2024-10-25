@@ -50,4 +50,36 @@ const profileViewSchema = {
   }),
 };
 
-module.exports = { profileViewSchema }; // Export the Joi schema directly
+const changePasswordSchema = {
+  body: Joi.object().keys({
+    oldPassword: Joi.string()
+      .min(8) // Minimum length of 8 characters
+      .max(30) // Optional maximum length of 30 characters
+      .pattern(new RegExp("(?=.*[a-z])")) // At least one lowercase letter
+      .pattern(new RegExp("(?=.*[A-Z])")) // At least one uppercase letter
+      .pattern(new RegExp("(?=.*[0-9])")) // At least one digit
+      .pattern(new RegExp("(?=.*[!@#$%^&*])")) // At least one special character
+      .required()
+      .messages({
+        "string.min": "Old password must be at least 8 characters long.",
+        "string.pattern.base":
+          "Old password must include at least one lowercase letter, one uppercase letter, one number, and one special character.",
+        "any.required": "Old password is required.",
+      }),
+    newPassword: Joi.string()
+      .min(8) // Minimum length of 8 characters
+      .max(30) // Optional maximum length of 30 characters
+      .pattern(new RegExp("(?=.*[a-z])")) // At least one lowercase letter
+      .pattern(new RegExp("(?=.*[A-Z])")) // At least one uppercase letter
+      .pattern(new RegExp("(?=.*[0-9])")) // At least one digit
+      .pattern(new RegExp("(?=.*[!@#$%^&*])")) // At least one special character
+      .required()
+      .messages({
+        "string.min": "New password must be at least 8 characters long.",
+        "string.pattern.base":
+          "New password must include at least one lowercase letter, one uppercase letter, one number, and one special character.",
+        "any.required": "New password is required.",
+      }),
+  }),
+};
+module.exports = { profileViewSchema, changePasswordSchema }; // Export the Joi schema directly

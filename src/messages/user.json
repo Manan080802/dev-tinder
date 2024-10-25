@@ -9,5 +9,8 @@
     "U08": "Invalid email or password.",
     "U09": "User is logout.",
     "U10": "User's profile is not updated.",
-    "U11": "User's profile is updated."
+    "U11": "User's profile is updated.",
+    "U12": "Password change successfully.",
+    "U13": "Password is not matched.",
+    "U14": "The new password cannot be the same as the current password. Please enter a different password."
 }
