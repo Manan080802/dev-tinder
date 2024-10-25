@@ -4,7 +4,7 @@ const Util = require("../utils/response");
 const User = require("../model/user");
 const userService = require("../services/user");
 const ApiError = require("../utils/ApiError");
-const { U01, U02, U07, U06, U03, U08 } = require("../messages/user.json");
+const { U01, U02, U07, U06, U03, U08, U09 } = require("../messages/user.json");
 const signup = catchAsync(async (req, res) => {
   const { email } = req.body;
   const userExist = await userService.getUserByEmail(email, true);
@@ -54,4 +54,8 @@ const login = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(Util.success(user, U07, "U07"));
 });
 
-module.exports = { signup, login };
+const logout = catchAsync(async (req, res) => {
+  res.cookie("token", null, { expires: new Date(Date.now()) });
+  res.status(httpStatus.OK).send(Util.success({}, U09, "U09"));
+});
+module.exports = { signup, login, logout };

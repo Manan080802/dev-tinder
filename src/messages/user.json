@@ -6,5 +6,6 @@
     "U05": "User is found.",
     "U06": "User is not found.",
     "U07": "User is login.",
-    "U08": "Invalid email or password."
+    "U08": "Invalid email or password.",
+    "U09": "User is logout."
 }
