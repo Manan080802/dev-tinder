@@ -5,4 +5,8 @@ const getUserByEmail = async (email, isPassword) => {
     `${isPassword ? "+password" : "-password"} -__v -createdOn -updatedOn`
   );
 };
-module.exports = { getUserByEmail };
+
+const editUserProfile = async (user, updateBody) => {
+  return Object.assign(user, updateBody).save();
+};
+module.exports = { getUserByEmail, editUserProfile };
