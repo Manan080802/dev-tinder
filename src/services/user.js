@@ -9,4 +9,14 @@ const getUserByEmail = async (email, isPassword) => {
 const editUserProfile = async (user, updateBody) => {
   return Object.assign(user, updateBody).save();
 };
-module.exports = { getUserByEmail, editUserProfile };
+
+const getUserById = async (id) => {
+  return User.findOne({
+    _id: id,
+    isActive: true,
+    isDelete: false,
+  });
+};
+
+
+module.exports = { getUserByEmail, editUserProfile, getUserById };

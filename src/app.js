@@ -15,6 +15,7 @@ router.use(express.json());
 router.use(cookieParser());
 router.use("/auth", require("./routes/auth"));
 router.use("/user", require("./routes/user"));
+router.use("/request",require("./routes/request"))
 
 router.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, "Not Found"));
