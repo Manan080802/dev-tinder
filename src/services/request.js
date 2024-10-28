@@ -1,4 +1,5 @@
 const Request = require("../model/request");
+const { INTERESTED } = require("../config/constants");
 
 const checkConnection = (fromUserId, toUserId) => {
   return Request.findOne({
@@ -14,4 +15,12 @@ const checkConnection = (fromUserId, toUserId) => {
     ],
   });
 };
-module.exports = {checkConnection}
+
+const getConnection = (requestId, toUserId) => {
+  return Request.findOne({
+    _id: requestId,
+    status: INTERESTED,
+    toUserId: toUserId,
+  });
+};
+module.exports = { checkConnection, getConnection };

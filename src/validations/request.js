@@ -1,5 +1,10 @@
 const Joi = require("joi");
-const { INTERESTED, IGNORED } = require("../config/constants");
+const {
+  INTERESTED,
+  IGNORED,
+  ACCEPTED,
+  REJECTED,
+} = require("../config/constants");
 const mongoose = require("mongoose");
 
 const requestSchema = {
@@ -23,4 +28,25 @@ const requestSchema = {
   }),
 };
 
-module.exports = { requestSchema }; // Export the Joi schema directly
+const reviewSchema = {
+  params: Joi.object().keys({
+    status: Joi.string()
+      .trim()
+      .valid(ACCEPTED, REJECTED)
+      .required()
+      .messages({
+        "string.empty": "status is required.",
+        "any.only": `status must be one of the following: ${ACCEPTED} ${REJECTED}.`,
+      }),
+    requestId: Joi.string()
+      .custom((value, helpers) => {
+        if (!mongoose.Types.ObjectId.isValid(value)) {
+          return helpers.error("any.invalid");
+        }
+        return value;
+      }, "ObjectId validation")
+      .required(),
+  }),
+};
+
+module.exports = { requestSchema, reviewSchema }; 

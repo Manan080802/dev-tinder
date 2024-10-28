@@ -4,8 +4,8 @@ const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
 const { U06 } = require("../messages/user.json");
 const Request = require("../model/request");
-const { checkConnection } = require("../services/request");
-const { C01, CO2 } = require("../messages/connection.json");
+const { checkConnection, getConnection } = require("../services/request");
+const { C01, CO2, C04, C05 } = require("../messages/connection.json");
 const Util = require("../utils/response");
 
 const sendRequest = catchAsync(async (req, res) => {
@@ -23,4 +23,17 @@ const sendRequest = catchAsync(async (req, res) => {
   const result = await Request.create({ fromUserId, toUserId, status });
   res.status(httpStatus.OK).send(Util.success({}, C01, "C01"));
 });
-module.exports = { sendRequest };
+
+const reviewRequest = catchAsync(async (req, res) => {
+  const { status, requestId } = req.params;
+  const toUserId = req.user._id;
+  const getRequest = await getConnection(requestId, toUserId);
+  if (!getRequest) {
+    throw new ApiError(httpStatus.NOT_FOUND, C04, "C04");
+  }
+
+  await Object.assign(getRequest, { status: status }).save();
+
+  res.status(httpStatus.ACCEPTED).send(Util.success({}, C05, "C05"));
+});
+module.exports = { sendRequest, reviewRequest };
