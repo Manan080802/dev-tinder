@@ -91,6 +91,7 @@ schema.pre("save", async function (next) {
   }
   next();
 });
+schema.index({ firstName: 1, lastName: 1 });
 const User = mongoose.model("User", schema, "Users");
 
 module.exports = User;
