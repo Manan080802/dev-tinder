@@ -2,9 +2,13 @@ const catchAsync = require("../utils/catchAsync");
 const { getUserById } = require("../services/user");
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
-const { U06 } = require("../messages/user.json");
+const { U06, U05 } = require("../messages/user.json");
 const Request = require("../model/request");
-const { checkConnection, getConnection } = require("../services/request");
+const {
+  checkConnection,
+  getConnection,
+  getConnectionCounts,
+} = require("../services/request");
 const { C01, CO2, C04, C05 } = require("../messages/connection.json");
 const Util = require("../utils/response");
 
@@ -36,4 +40,10 @@ const reviewRequest = catchAsync(async (req, res) => {
 
   res.status(httpStatus.ACCEPTED).send(Util.success({}, C05, "C05"));
 });
-module.exports = { sendRequest, reviewRequest };
+
+const getConnections = catchAsync(async (req, res) => {
+  const connectionCounts = await getConnectionCounts(req);
+
+  res.send(Util.success(connectionCounts, U05, "U05"));
+});
+module.exports = { sendRequest, reviewRequest, getConnections };

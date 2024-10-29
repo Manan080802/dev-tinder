@@ -4,8 +4,16 @@ const router = express.Router();
 
 const validate = require("../middleware/validate");
 const auth = require("../middleware/auth");
-const { requestSchema, reviewSchema } = require("../validations/request");
-const { sendRequest, reviewRequest } = require("../controller/request");
+const {
+  requestSchema,
+  reviewSchema,
+  getConnectionSchema,
+} = require("../validations/request");
+const {
+  sendRequest,
+  reviewRequest,
+  getConnections,
+} = require("../controller/request");
 // Define the user schema using Joi
 
 router
@@ -15,5 +23,9 @@ router
 router
   .route("/review/:status/:requestId")
   .post(auth, validate(reviewSchema), reviewRequest);
+
+router
+  .route("/get-connection/:status")
+  .get(auth, validate(getConnectionSchema), getConnections);
 
 module.exports = router;
