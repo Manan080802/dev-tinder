@@ -57,7 +57,7 @@ const getConnectionSchema = {
       .required()
       .messages({
         "string.empty": "status is required.",
-        "any.only": `status must be one of the following: ${INTERESTED} ${REJECTED}.`,
+        "any.only": `status must be one of the following: ${INTERESTED} ${REJECTED} ${ACCEPTED}.`,
       }),
   }),
   query: Joi.object()
