@@ -7,12 +7,14 @@ const auth = require("../middleware/auth");
 const {
   requestSchema,
   reviewSchema,
-  getConnectionSchema,
+  getConnectionSchema, 
+  getAcceptedSchema
 } = require("../validations/request");
 const {
   sendRequest,
   reviewRequest,
   getConnections,
+  getAcceptedConnections
 } = require("../controller/request");
 // Define the user schema using Joi
 
@@ -27,5 +29,7 @@ router
 router
   .route("/get-connection/:status")
   .get(auth, validate(getConnectionSchema), getConnections);
+
+router.route("/get-accepted-connection").get(auth,validate(getAcceptedSchema),getAcceptedConnections)
 
 module.exports = router;

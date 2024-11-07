@@ -8,6 +8,7 @@ const {
   checkConnection,
   getConnection,
   getConnectionCounts,
+  getAcceptedConnectionCounts
 } = require("../services/request");
 const { C01, CO2, C04, C05 } = require("../messages/connection.json");
 const Util = require("../utils/response");
@@ -44,6 +45,13 @@ const reviewRequest = catchAsync(async (req, res) => {
 const getConnections = catchAsync(async (req, res) => {
   const connectionCounts = await getConnectionCounts(req);
 
-  res.send(Util.success(connectionCounts, U05, "U05"));
+  res.status(httpStatus.OK).send(Util.success(connectionCounts, U05, "U05"));
 });
-module.exports = { sendRequest, reviewRequest, getConnections };
+
+const getAcceptedConnections = catchAsync(async(req,res)=>{
+  const acceptedConnection = await getAcceptedConnectionCounts(req)
+  console.log(acceptedConnection)
+  res.send(Util.success(acceptedConnection,U05,"U05"))
+  
+})
+module.exports = { sendRequest, reviewRequest, getConnections,getAcceptedConnections };
