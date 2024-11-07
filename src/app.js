@@ -1,5 +1,5 @@
-if (process.version !== "v20.12.2") {
-  console.log("Only use in v20.12.2");
+if (process.version !== "v20.15.0") {
+  console.log("Only use in v20.15.0");
   process.exit(1);
 }
 const dotenv = require("dotenv");
