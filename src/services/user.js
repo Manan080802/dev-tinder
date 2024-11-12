@@ -18,5 +18,9 @@ const getUserById = async (id) => {
   });
 };
 
+const feedData = async (req)=>{
+  return req.user
+}
 
-module.exports = { getUserByEmail, editUserProfile, getUserById };
+
+module.exports = { getUserByEmail, editUserProfile, getUserById ,feedData};

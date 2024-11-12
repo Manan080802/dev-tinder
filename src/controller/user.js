@@ -2,7 +2,7 @@ const httpStatus = require("http-status");
 const catchAsync = require("../utils/catchAsync");
 const { U05, U10, U11, U12, U13, U14 } = require("../messages/user.json");
 const Util = require("../utils/response");
-const { editUserProfile, getUserByEmail } = require("../services/user");
+const { editUserProfile, getUserByEmail,feedData } = require("../services/user");
 const ApiError = require("../utils/ApiError");
 const User = require("../model/user");
 const profileView = catchAsync((req, res) => {
@@ -34,4 +34,8 @@ const changePassword = catchAsync(async (req, res) => {
   res.send(Util.success({}, U12, "U12"));
 });
 
-module.exports = { profileView, profileEdit, changePassword };
+const feed = catchAsync(async(req,res)=>{
+  const result = await feedData(req)
+  res.send(Util.success(result,U05,"U05"))
+})
+module.exports = { profileView, profileEdit, changePassword,feed };

@@ -82,4 +82,20 @@ const changePasswordSchema = {
       }),
   }),
 };
-module.exports = { profileViewSchema, changePasswordSchema }; // Export the Joi schema directly
+
+const feedSchema = {
+  query: Joi.object()
+  .keys({
+    search: Joi.string().allow(""),
+    pageNumber: Joi.number().integer().positive().optional(),
+    limit: Joi.number().integer().positive().optional(),
+    isAllData: Joi.boolean().valid(true),
+  })
+  .or("pageNumber", "isAllData")
+  .with("pageNumber", "limit") // Requires 'limit' if 'pageNumber' is present
+  .with("limit", "pageNumber") // Requires 'pageNumber' if 'limit' is present
+  .nand("pageNumber", "isAllData") // 'pageNumber' and 'isAllData' can't exist together
+  .nand("limit", "isAllData"),
+}
+
+module.exports = { profileViewSchema, changePasswordSchema,feedSchema }; // Export the Joi schema directly
