@@ -50,7 +50,7 @@ const getConnections = catchAsync(async (req, res) => {
 
 const getAcceptedConnections = catchAsync(async(req,res)=>{
   const acceptedConnection = await getAcceptedConnectionCounts(req)
-  console.log(acceptedConnection)
+ 
   res.send(Util.success(acceptedConnection,U05,"U05"))
   
 })

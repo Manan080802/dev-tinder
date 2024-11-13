@@ -201,7 +201,7 @@ const getAcceptedConnectionCounts = async (req)=>{
             },
           },
           {
-            lastName: {
+            "userDetail.lastName": {
               $regex: req.query.search,
               $options: "i",
             },
