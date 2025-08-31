@@ -5,7 +5,14 @@
 const dotenv = require("dotenv");
 dotenv.config({});
 const express = require("express");
+const cors = require("cors");
 const router = express();
+router.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 const { dataBaseConnect } = require("./config/database");
 const httpStatus = require("http-status");
 const ApiError = require("./utils/ApiError");
