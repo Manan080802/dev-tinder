@@ -1,7 +1,7 @@
-if (process.version !== "v20.15.0") {
-  console.log("Only use in v20.15.0");
-  process.exit(1);
-}
+// if (process.version !== "v20.15.0") {
+//   console.log("Only use in v20.15.0");
+//   process.exit(1);
+// }
 const dotenv = require("dotenv");
 dotenv.config({});
 const express = require("express");
@@ -15,7 +15,7 @@ router.use(express.json());
 router.use(cookieParser());
 router.use("/auth", require("./routes/auth"));
 router.use("/user", require("./routes/user"));
-router.use("/request",require("./routes/request"))
+router.use("/request", require("./routes/request"));
 
 router.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, "Not Found"));
