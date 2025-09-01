@@ -23,6 +23,16 @@ router.use(cookieParser());
 router.use("/auth", require("./routes/auth"));
 router.use("/user", require("./routes/user"));
 router.use("/request", require("./routes/request"));
+router.use((req, res, next) => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate"
+  );
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  res.setHeader("Surrogate-Control", "no-store");
+  next();
+});
 
 router.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, "Not Found"));
