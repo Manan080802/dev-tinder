@@ -24,7 +24,7 @@ const profileEdit = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.NOT_MODIFIED, U10, "U10");
   }
 
-  res.status(httpStatus.OK).send(Util.success({}, U11, "U11"));
+  res.status(httpStatus.OK).send(Util.success(result, U11, "U11"));
 });
 
 const changePassword = catchAsync(async (req, res) => {
