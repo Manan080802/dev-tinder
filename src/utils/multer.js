@@ -1,28 +1,16 @@
 const multer = require("multer");
-const path = require("path");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "uploads/"),
-  filename: (req, file, cb) => {
-    // fallback name if req.body is not ready yet
-    let customName = "profile";
-
-    if (req.body && req.body.firstName) {
-      customName = req.body.firstName.toLowerCase().replace(/\s+/g, "-");
-    }
-
-    // Example: manan-1693939292021.png
-    cb(null, `${customName}-${Date.now()}${path.extname(file.originalname)}`);
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "images", // Cloudinary folder
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    transformation: [{ width: 500, height: 500, crop: "limit" }],
   },
 });
 
-const upload = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith("image/")) cb(null, true);
-    else cb(new Error("Only images allowed"), false);
-  },
-});
+const upload = multer({ storage });
 
 module.exports = upload;

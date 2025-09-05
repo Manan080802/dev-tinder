@@ -24,6 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.1",
     "multer": "^2.0.2",
+    "multer-storage-cloudinary": "^4.0.0",
     "os": "^0.1.2",
     "validator": "^13.12.0"
   },

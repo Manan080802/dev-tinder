@@ -1,6 +1,9 @@
 const httpStatus = require("http-status");
 const catchAsync = require("../utils/catchAsync");
 const { U05, U10, U11, U12, U13, U14 } = require("../messages/user.json");
+
+const cloudinary = require("../config/cloudinary");
+
 const Util = require("../utils/response");
 const {
   editUserProfile,
@@ -16,10 +19,24 @@ const profileView = catchAsync((req, res) => {
   res.status(httpStatus.OK).send(Util.success(req.user, U05, "U05"));
 });
 
+function extractPublicId(url) {
+  const parts = url.split("/");
+  const fileWithExt = parts.pop(); // manan-1757067362096.jpg
+  const folder = parts.pop(); // profiles
+  const publicId = folder + "/" + fileWithExt.split(".")[0]; // profiles/manan-1757067362096
+  return publicId;
+}
+
 const profileEdit = catchAsync(async (req, res) => {
   const user = req.user;
   const updateBody = req.body;
-  updateBody.profileImg = req.file.filename;
+  if (req?.file) {
+    if (req?.user?.profileImg) {
+      const publicId = extractPublicId(req.user.profileImg);
+      await cloudinary.uploader.destroy(publicId);
+    }
+    updateBody.profileImg = req.file.path;
+  }
   const result = await editUserProfile(user, updateBody);
   if (!result) {
     throw new ApiError(httpStatus.NOT_MODIFIED, U10, "U10");
