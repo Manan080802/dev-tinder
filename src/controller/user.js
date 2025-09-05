@@ -19,6 +19,7 @@ const profileView = catchAsync((req, res) => {
 const profileEdit = catchAsync(async (req, res) => {
   const user = req.user;
   const updateBody = req.body;
+  updateBody.profileImg = req.file.filename;
   const result = await editUserProfile(user, updateBody);
   if (!result) {
     throw new ApiError(httpStatus.NOT_MODIFIED, U10, "U10");

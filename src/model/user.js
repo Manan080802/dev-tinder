@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const { MALE, FEMALE, OTHER } = require("../config/constants");
 const validator = require("validator");
 const { use } = require("../routes/auth");
+const { type } = require("os");
+const { string } = require("joi");
 const options = {
   timestamps: {
     createdAt: "createdOn",
@@ -66,6 +68,9 @@ const schema = new mongoose.Schema(
       type: Boolean,
       default: false,
       select: false,
+    },
+    profileImg: {
+      type: String,
     },
   },
   options
