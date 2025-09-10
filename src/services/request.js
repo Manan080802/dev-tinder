@@ -1,5 +1,5 @@
 const Request = require("../model/request");
-const { INTERESTED,ACCEPTED } = require("../config/constants");
+const { INTERESTED, ACCEPTED } = require("../config/constants");
 const { default: mongoose } = require("mongoose");
 
 const checkConnection = (fromUserId, toUserId) => {
@@ -47,6 +47,7 @@ const getConnectionCounts = async (req) => {
               firstName: 1,
               lastName: 1,
               skill: 1,
+              profileImg: 1,
             },
           },
         ],
@@ -63,7 +64,7 @@ const getConnectionCounts = async (req) => {
       $project: {
         // status: 1,
         // userDetails: 1,
-        userDetail:"$userDetails"
+        userDetail: "$userDetails",
       },
     },
   ];
@@ -116,60 +117,63 @@ const getConnectionCounts = async (req) => {
   }
 };
 
-const getAcceptedConnectionCounts = async (req)=>{
-  const loginUserId = req.user._id
+const getAcceptedConnectionCounts = async (req) => {
+  const loginUserId = req.user._id;
 
   const pipeline = [
     {
-      $match:{
-        $or:[
-          {toUserId:new mongoose.Types.ObjectId(loginUserId),status:ACCEPTED},
-          {fromUserId:new mongoose.Types.ObjectId(loginUserId),status:ACCEPTED}
-        ],
-        
-      }
-    },
-    {
-      $lookup:{
-        from:"Users",
-        localField:"toUserId",
-        foreignField:"_id",
-        pipeline:[
+      $match: {
+        $or: [
           {
-              $project: {
-                firstName: 1,
-                lastName: 1,
-                skill: 1,
-              },
-            },
-          
-        ],
-        as:"toUserData"
-      }
-    },
-    {
-      $lookup:{
-        from:"Users",
-        localField:"fromUserId",
-        foreignField:"_id",
-        pipeline:[
+            toUserId: new mongoose.Types.ObjectId(loginUserId),
+            status: ACCEPTED,
+          },
           {
-              $project: {
-                firstName: 1,
-                lastName: 1,
-                skill: 1,
-              },
-            },
-          
+            fromUserId: new mongoose.Types.ObjectId(loginUserId),
+            status: ACCEPTED,
+          },
         ],
-        as:"fromUserData"
-      }
+      },
     },
     {
-      $unwind:"$toUserData"
+      $lookup: {
+        from: "Users",
+        localField: "toUserId",
+        foreignField: "_id",
+        pipeline: [
+          {
+            $project: {
+              firstName: 1,
+              lastName: 1,
+              skill: 1,
+            },
+          },
+        ],
+        as: "toUserData",
+      },
     },
     {
-      $unwind:"$fromUserData"
+      $lookup: {
+        from: "Users",
+        localField: "fromUserId",
+        foreignField: "_id",
+        pipeline: [
+          {
+            $project: {
+              firstName: 1,
+              lastName: 1,
+              skill: 1,
+            },
+          },
+        ],
+        as: "fromUserData",
+      },
+    },
+    {
+      $unwind: "$toUserData",
+    },
+    {
+      $unwind: "$fromUserData",
     },
     {
       $addFields: {
@@ -183,12 +187,11 @@ const getAcceptedConnectionCounts = async (req)=>{
       },
     },
     {
-      $project:{
-      userDetail:"$user"
-      }
-    }
-
-  ]
+      $project: {
+        userDetail: "$user",
+      },
+    },
+  ];
 
   if (req.query.search) {
     pipeline.push({
@@ -210,7 +213,7 @@ const getAcceptedConnectionCounts = async (req)=>{
       },
     });
   }
-   if (req.query.isAllData) {
+  if (req.query.isAllData) {
     const allData = await Request.aggregate(pipeline);
     const totalData = allData.length;
     return { totalResults: totalData, data: allData };
@@ -239,6 +242,10 @@ const getAcceptedConnectionCounts = async (req)=>{
       data,
     };
   }
-
-}
-module.exports = { checkConnection, getConnection, getConnectionCounts,getAcceptedConnectionCounts };
+};
+module.exports = {
+  checkConnection,
+  getConnection,
+  getConnectionCounts,
+  getAcceptedConnectionCounts,
+};
