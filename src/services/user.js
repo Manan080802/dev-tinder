@@ -41,6 +41,8 @@ const feedData = async (req) => {
     allReadyUserId.add(user.fromUserId.toString());
     allReadyUserId.add(user.toUserId.toString());
   });
+  // Add current user to excluded list
+  allReadyUserId.add(req.user._id.toString());
 
   const pipeline = [
     {
